@@ -4,11 +4,18 @@ project(opt C)
 set(CMAKE_C_STANDARD 17)
 
 add_executable(opt src/main.c
-        include/opt/lexer.h
+        include/opt/lexer/lexer.h
         include/opt/token.h
-        include/opt/config/lexer_config.h
+        include/opt/lexer/table.h
         include/opt/err.h
-        src/lexer.c
+        src/lexer/lexer.c
+        include/opt/lexer/utils.h
+        src/lexer/utils/token_utils.c
+        src/lexer/utils/state_utils.c
+        src/lexer/utils/char_utils.c
+        include/opt/lexer/char_types.h
+        include/opt/lexer/terminating_states.h
+        src/lexer/lexer_table.c
 )
 
 target_include_directories(opt PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")

@@ -1,18 +1,21 @@
 // *************************************************************************
-// lexer.h
+// table.h
 // System Programming, part2: Programming language translator implementation
 // Created by Porubaimikh Oleksandr on 9/25/2023
 // *************************************************************************
 
-#ifndef SRC_LEXER_H
-#define SRC_LEXER_H
+#ifndef OPT_LEXER_TABLE_H
+#define OPT_LEXER_TABLE_H
 
 #include <stdint.h>
-#include <stdio.h>
-#include <opt/token.h>
-#include <opt/err.h>
+#include "char_types.h"
 
 
-error_t get_tokens(FILE* file, token_t tokens[], uint32_t tokens_length);
+typedef uint16_t state_t;
 
-#endif //SRC_LEXER_H
+/**
+ * Defines a transition table for lexical analyzer
+ */
+extern uint16_t LEXER_TABLE[][CHAR_LENGTH_];
+
+#endif //OPT_LEXER_TABLE_H

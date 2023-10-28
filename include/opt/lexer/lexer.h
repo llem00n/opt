@@ -4,17 +4,15 @@
 // Created by Porubaimikh Oleksandr on 9/25/2023
 // *************************************************************************
 
-#include "opt/lexer/lexer.h"
+#ifndef SRC_LEXER_H
+#define SRC_LEXER_H
+
+#include <stdint.h>
 #include <stdio.h>
+#include "opt/token.h"
+#include "opt/err.h"
 
-#define MAX_TOKENS_LENGTH 500
 
-int main() {
-  FILE *file = fopen("./tmp.txt", "rt");
-  if (!file) return 0;
+error_t get_tokens(FILE* file, token_t tokens[], uint32_t tokens_length);
 
-  token_t tokens[MAX_TOKENS_LENGTH];
-  error_t error = get_tokens(file, tokens, MAX_TOKENS_LENGTH);
-  fclose(file);
-  return 0;
-}
+#endif //SRC_LEXER_H
