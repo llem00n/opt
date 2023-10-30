@@ -62,6 +62,12 @@ error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
     }
   }
 
+  if (tokens_length == tokens_max_length) {
+    result = ERROR_TOO_MUCH_TOKENS;
+  } else {
+    tokens[tokens_length++] = (token_t){ .type = TOKEN_EOF, .line = line, .value = NULL };
+  }
+
   return result;
 }
 

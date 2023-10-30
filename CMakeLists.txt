@@ -16,6 +16,12 @@ add_executable(opt src/main.c
         include/opt/lexer/char_types.h
         include/opt/lexer/terminating_states.h
         src/lexer/lexer_table.c
+        include/opt/output/tokens.h
+        src/output/tokens.c
+        include/opt/output/utils/token_type_str.h
+        src/output/utils/token_type_str.c
+        include/opt/files.h
+        src/files.c
 )
 
 target_include_directories(opt PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")

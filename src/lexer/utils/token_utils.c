@@ -19,7 +19,7 @@ token_type_t get_token_type(state_t state) {
       token_type = TOKEN_VARIABLE;
       break;
     case TSTATE_DIGIT:
-      token_type = TOKEN_DIGIT;
+      token_type = TOKEN_NUMBER;
       break;
     case TSTATE_WHITESPACE:
       token_type = TOKEN_WHITESPACE;
