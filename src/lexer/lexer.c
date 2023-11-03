@@ -30,7 +30,6 @@ error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
 
   while (c != EOF) {
     lexer_characters_t character_type;
-    is_terminating;
     if (read_next) c = getc(file);
     if (c == '\n' && !read_next) line++;
     read_next = true;

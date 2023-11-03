@@ -24,5 +24,6 @@ add_executable(opt src/main.c
         src/files.c
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 target_include_directories(opt PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 

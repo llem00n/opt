@@ -46,6 +46,8 @@ typedef enum {
   TOKEN_EOF,
   TOKEN_PROGRAM,
   TOKEN_COLON,
+  TOKEN_SEMICOLON,
+  TOKEN_COMMA,
   TOKEN_FINISH,
   TOKEN_LENGTH_,
 } token_type_t;

@@ -41,6 +41,8 @@ typedef enum {
   TSTATE_COLON = 105,
   TSTATE_ASSIGN = 108,
   TSTATE_NOT_EQUALS = 110,
+  TSTATE_SEMICOLON = 112,
+  TSTATE_COMMA = 114,
 } terminating_states_t;
 
 #endif //OPT_TERMINATING_STATES_H

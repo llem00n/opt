@@ -131,6 +131,12 @@ lexer_characters_t get_character_type(int32_t c) {
     case EOF:
       type = CHAR_EOF;
       break;
+    case ';':
+      type = CHAR_SEMICOLON;
+      break;
+    case ',':
+      type = CHAR_COMMA;
+      break;
     default:
       if (isspace(c)) {
         type = CHAR_WHITESPACE;

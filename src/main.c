@@ -1,10 +1,10 @@
 // *************************************************************************
-// lexer.h
+// main.h
 // System Programming, part2: Programming language translator implementation
 // Created by Porubaimikh Oleksandr on 9/25/2023
 // *************************************************************************
 
-#include "opt/lexer/lexer.h"
+#include <opt/lexer/lexer.h>
 #include <opt/files.h>
 #include <opt/output/tokens.h>
 #include <stdio.h>
