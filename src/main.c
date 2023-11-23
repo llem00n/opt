@@ -1,5 +1,5 @@
 // *************************************************************************
-// main.h
+// main.c
 // System Programming, part2: Programming language translator implementation
 // Created by Porubaimikh Oleksandr on 9/25/2023
 // *************************************************************************

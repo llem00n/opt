@@ -21,6 +21,9 @@ add_executable(opt src/main.c
         include/opt/output/utils/token_type_str.h
         src/output/utils/token_type_str.c
         include/opt/files.h
+        include/opt/syntax_tree/expr.h
+        include/opt/parser/parser.h
+        src/parser/parser.c
         src/files.c
 )
 

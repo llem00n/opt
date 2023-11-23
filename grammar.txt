@@ -1,31 +1,32 @@
-code = program, variables, block;
+root = program, variables, block;
 
 program = "Program", IDENTIFIER;
 variables = "Var", { variable, [ "<-", literal ] };
-block = "Start", { statement, ";" }, "End";
+block = "Start", lines,  "End";
+lines = { statement };
 
-statement = expression;
+statement = expression, ";" | for | if | goto | block;
 
-expression = literal
-            | group
-            | unary
-            | binary
-            | variable
-            | input
-            | assignment;
-
-for = "For", assignment, "To", literal, 34{ statement, ";" }, "Next";
+for = "For", variable, "<-", expression, "To", expression, ";", lines, "Next";
+if = "If", expression, goto;
+goto = "Goto", IDENTIFIER;
 
 lvalue = variable | output;
 rvalue = expression;
 assignment = lvalue, "<-", rvalue;
 
 group = "(", expression, ")";
-unary = ( "--" | "!" ), expression;
-binary = expression, operator, expression;
-
-operator = "++" | "--" | "**" | "Div" | "Mod" | "=" | "<>" | "!>" | "!<" | "&" | "|"
 input = "Scan";
 output = "Print";
 literal = NUMBER;
 variable = IDENTIFIER;
+
+expression = assignment;
+assignment = { lvalue, "<-" }, rvalue;
+logical    = equality, { ( "&" | "|" ), equality };
+equality   = comparison, { ( "=" | "<>" ), comparison };
+comparison = term, { ( "!>" | "!<" ) term };
+term       = factor, { ( "--" | "==" ), factor };
+factor     = unary { ( "**" | "Div" | "Mod" ) unary };
+unary      = ( "--" | "!" ), unary | primary;
+primary    = literal | group | variable | input;
