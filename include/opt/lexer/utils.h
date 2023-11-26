@@ -11,9 +11,34 @@
 #include "opt/lexer/table.h"
 #include "opt/token.h"
 
+/**
+ * @brief Defines the state is terminating or not
+ * @param state - state to check
+ * @return true if state is terminating, false otherwise
+ */
 bool is_terminating_state(state_t state);
+
+/**
+ * @brief Returns the token type by state
+ * @param state - state to check
+ * @return token type
+ */
 token_type_t get_token_type(state_t state);
+
+/**
+ * @brief Returns the character type
+ * @param c - character to check
+ * @return character type
+ */
 lexer_characters_t get_character_type(int32_t c);
+
+/**
+ * @brief Creates a token
+ * @param token_value - token value
+ * @param state - token state
+ * @param line - token line
+ * @return token
+ */
 token_t create_token(char *token_value, state_t state, uint32_t line);
 
 #ifdef _WIN32

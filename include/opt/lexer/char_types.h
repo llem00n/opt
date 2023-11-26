@@ -8,7 +8,7 @@
 #define OPT_LEXER_CHAR_TYPES_H
 
 /**
- * Defines an enumeration of character types for lexical analyzation
+ * @brief Defines an enumeration of character types for lexical analyzation
  */
 typedef enum {
   CHAR_D,

@@ -7,6 +7,9 @@
 #ifndef OPT_TERMINATING_STATES_H
 #define OPT_TERMINATING_STATES_H
 
+/**
+ * @brief Defines an enumeration of terminating states for lexical analyzation
+ */
 typedef enum {
   TSTATE_BAD_IDENTIFIER = 2,
   TSTATE_VARIABLE = 9,

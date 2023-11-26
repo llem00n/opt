@@ -7,7 +7,9 @@
 #ifndef OPT_ERR_H
 #define OPT_ERR_H
 
-
+/**
+ * @brief Defines error codes
+ */
 typedef enum {
   ERROR_OK,
   ERROR_TOKEN_TOO_LONG,

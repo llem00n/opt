@@ -14,7 +14,7 @@
 typedef uint16_t state_t;
 
 /**
- * Defines a transition table for lexical analyzer
+ * @brief Defines a transition table for lexical analyzer
  */
 extern uint16_t LEXER_TABLE[][CHAR_LENGTH_];
 

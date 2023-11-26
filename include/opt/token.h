@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 /**
- * Defines different types of tokens
+ * @brief Defines different types of tokens
  */
 typedef enum {
   TOKEN_BAD_IDENTIFIER,
@@ -55,7 +55,7 @@ typedef enum {
 #define SELF_CONTAINING_TOKENS_START TOKEN_DIV
 
 /**
- * Defines the type for token, returned by lexer
+ * @brief Defines the type for token, returned by lexer
  */
 typedef struct {
   char *value;
