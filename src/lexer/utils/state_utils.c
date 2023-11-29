@@ -43,6 +43,8 @@ bool is_terminating_state(state_t state) {
     case TSTATE_COLON:
     case TSTATE_ASSIGN:
     case TSTATE_NOT_EQUALS:
+    case TSTATE_SEMICOLON:
+    case TSTATE_COMMA:
       result = true;
       break;
     default:

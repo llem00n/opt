@@ -33,6 +33,6 @@ error_t open_files(files_context_t *fctx, char *input_file_name, char *tokens_fi
  * @brief Closes files
  * @param fctx - context for files
  */
-void close_files(files_context_t *fctx);
+void close_files(const files_context_t *fctx);
 
 #endif //OPT_FILES_H

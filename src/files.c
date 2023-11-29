@@ -44,7 +44,7 @@ error_t open_files(files_context_t *fctx, char *input_file_name, char *tokens_fi
   return result;
 }
 
-void close_files(files_context_t *fctx) {
+void close_files(const files_context_t *fctx) {
   if (!fctx) return;
 
   if (fctx->input) fclose(fctx->input);

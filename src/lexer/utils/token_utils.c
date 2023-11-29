@@ -111,6 +111,12 @@ token_type_t get_token_type(state_t state) {
     case TSTATE_NOT_EQUALS:
       token_type = TOKEN_NOT_EQUALS;
       break;
+    case TSTATE_SEMICOLON:
+      token_type = TOKEN_SEMICOLON;
+      break;
+    case TSTATE_COMMA:
+      token_type = TOKEN_COMMA;
+      break;
     default:
       token_type = TOKEN_LENGTH_;
   }

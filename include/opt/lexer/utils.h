@@ -39,7 +39,7 @@ lexer_characters_t get_character_type(int32_t c);
  * @param line - token line
  * @return token
  */
-token_t create_token(char *token_value, state_t state, uint32_t line);
+token_t create_token(const char *token_value, state_t state, uint32_t line);
 
 #ifdef _WIN32
 #define strncpy(dest, src, size) strncpy_s(dest, size, src)

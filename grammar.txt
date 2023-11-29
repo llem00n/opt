@@ -1,32 +1,37 @@
+lowcase = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z";
+upcase = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z";
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+IDENTIFIER = ( lowcase | upcase ), { ( lowcase | upcase ) }
+
 root = program, variables, block;
 
 program = "Program", IDENTIFIER;
-variables = "Var", { variable, [ "<-", literal ] };
+variables = "Var", { variable, [ "<-", number literal ] };
 block = "Start", lines,  "End";
 lines = { statement };
 
-statement = expression, ";" | for | if | goto | block;
+statement = expression, ";" | for | if | goto | block | label;
 
 for = "For", variable, "<-", expression, "To", expression, ";", lines, "Next";
-if = "If", expression, goto;
+if = "If", group, goto;
 goto = "Goto", IDENTIFIER;
+label = IDENTIFIER, ":"
 
 lvalue = variable | output;
 rvalue = expression;
-assignment = lvalue, "<-", rvalue;
 
 group = "(", expression, ")";
 input = "Scan";
 output = "Print";
-literal = NUMBER;
-variable = IDENTIFIER;
+number literal = digit, { digit };
+variable = lowcase, 6 * [upcase];
 
 expression = assignment;
-assignment = { lvalue, "<-" }, rvalue;
+assignment = { lvalue, "<-" }, logical;
 logical    = equality, { ( "&" | "|" ), equality };
 equality   = comparison, { ( "=" | "<>" ), comparison };
 comparison = term, { ( "!>" | "!<" ) term };
 term       = factor, { ( "--" | "==" ), factor };
 factor     = unary { ( "**" | "Div" | "Mod" ) unary };
 unary      = ( "--" | "!" ), unary | primary;
-primary    = literal | group | variable | input;
+primary    = number literal | group | variable | input;

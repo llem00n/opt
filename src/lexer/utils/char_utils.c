@@ -137,6 +137,9 @@ lexer_characters_t get_character_type(int32_t c) {
     case ',':
       type = CHAR_COMMA;
       break;
+    case ':':
+      type = CHAR_COLON;
+      break;
     default:
       if (isspace(c)) {
         type = CHAR_WHITESPACE;

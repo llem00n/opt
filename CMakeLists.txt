@@ -4,9 +4,26 @@ project(opt C)
 set(CMAKE_C_STANDARD 17)
 
 add_executable(opt src/main.c
-        include/opt/ast.h
+        include/opt/ast/ast.h
+        include/opt/ast/stmt.h
+        include/opt/ast/stmt/block.h
+        include/opt/ast/stmt/expr.h
+        include/opt/ast/stmt/for.h
+        include/opt/ast/stmt/goto.h
+        include/opt/ast/stmt/if.h
+        include/opt/ast/stmt/label.h
+        include/opt/ast/expr.h
+        include/opt/ast/expr/assign.h
+        include/opt/ast/expr/binary.h
+        include/opt/ast/expr/number.h
+        include/opt/ast/expr/print.h
+        include/opt/ast/expr/scan.h
+        include/opt/ast/expr/unary.h
+        include/opt/ast/expr/variable.h
+        include/opt/ast/utils.h
         include/opt/err.h
         include/opt/files.h
+        include/opt/precompile_config.h
         include/opt/lexer/char_types.h
         include/opt/lexer/lexer.h
         include/opt/lexer/table.h
@@ -15,9 +32,11 @@ add_executable(opt src/main.c
         include/opt/output/tokens.h
         include/opt/output/utils/token_type_str.h
         include/opt/parser/parser.h
+        include/opt/parser/__parser_private.h
         include/opt/token.h
 
         src/ast.c
+        src/exprstmt.c
         src/files.c
         src/lexer/lexer.c
         src/lexer/lexer_table.c
@@ -26,7 +45,8 @@ add_executable(opt src/main.c
         src/lexer/utils/token_utils.c
         src/output/tokens.c
         src/output/utils/token_type_str.c
-        src/parser/parser.c
+        src/parser.c
+        src/err.c
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)

@@ -7,16 +7,17 @@
 #include <opt/lexer/lexer.h>
 #include <opt/files.h>
 #include <opt/output/tokens.h>
+#include <opt/precompile_config.h>
+#include <opt/parser/parser.h>
 #include <stdio.h>
-
-#define MAX_TOKENS_LENGTH 500
 
 int main() {
   files_context_t fctx;
   token_t tokens[MAX_TOKENS_LENGTH];
-  error_t error;
+  int8_t ast_bytes[MAX_AST_BYTES_LENGTH];
+  parser_ctx_t pctx;
 
-  error = open_files(&fctx, "input.txt", "tokens.txt", "errors.txt");
+  error_t error = open_files(&fctx, "input.txt", "tokens.txt", "errors.txt");
   if (error != ERROR_OK) {
     fprintf(stderr, "There was a problem opening files...\n");
     close_files(&fctx);
@@ -35,6 +36,20 @@ int main() {
   }
 
   print_tokens(tokens, fctx.tokens);
+
+  error = parser_ctx_init(&pctx, tokens, ast_bytes, MAX_AST_BYTES_LENGTH);
+  if (error != ERROR_OK) {
+    fprintf(stderr, "There was a problem initializing parser context...\n");
+    close_files(&fctx);
+    return 1;
+  }
+
+  error = parse(&pctx);
+  if (error != ERROR_OK) {
+    fprintf(stderr, "There was a problem parsing ast... [%s] at line %d\n", get_error_message(error), pctx.token_cursor->line);
+    close_files(&fctx);
+    return 1;
+  }
 
   close_files(&fctx);
   return 0;
