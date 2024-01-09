@@ -27,7 +27,7 @@ error_t expr_assign_init(expr_assign_t *expr_assign, expr_t *left, expr_t *right
   if (expr_assign == NULL) {
     return ERROR_BAD_PARAMETER;
   }
-  expr_binary_init((expr_binary_t *) expr_assign, EXPR_BINARY_ASSIGN, left, right, start_token);
+  expr_binary_init((expr_binary_t *) expr_assign, EXPR_BINARY_TYPE_ASSIGN, left, right, start_token);
   return ERROR_OK;
 }
 

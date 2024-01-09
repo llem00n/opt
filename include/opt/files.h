@@ -17,6 +17,7 @@ typedef struct {
   FILE *input;
   FILE *tokens;
   FILE *errors;
+  FILE *aasm;
 } files_context_t;
 
 /**
@@ -25,9 +26,10 @@ typedef struct {
  * @param input_file_name - name of input file
  * @param tokens_file_name - name of tokens file
  * @param errors_file_name - name of errors file
+ * @param asm_file_name - name of asm file
  * @return error code
  */
-error_t open_files(files_context_t *fctx, char *input_file_name, char *tokens_file_name, char *errors_file_name);
+error_t open_files(files_context_t *fctx, char *input_file_name, char *tokens_file_name, char *errors_file_name, char *asm_file_name);
 
 /**
  * @brief Closes files

@@ -10,9 +10,9 @@ variables = "Var", { variable, [ "<-", number literal ] };
 block = "Start", lines,  "End";
 lines = { statement };
 
-statement = expression, ";" | for | if | goto | block | label;
+statement = (expression | for | if | goto | block | label), ";";
 
-for = "For", variable, "<-", expression, "To", expression, ";", lines, "Next";
+for = "For", variable, "<-", expression, "To", expression, lines, "Next";
 if = "If", group, goto;
 goto = "Goto", IDENTIFIER;
 label = IDENTIFIER, ":"

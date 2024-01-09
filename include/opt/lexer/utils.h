@@ -4,12 +4,13 @@
 // Created by Porubaimikh Oleksandr on 10/23/2023
 // *************************************************************************
 
-#ifndef OPT_UTILS_H
-#define OPT_UTILS_H
+#ifndef OPT_LEXER_UTILS_H
+#define OPT_LEXER_UTILS_H
 
 #include <stdbool.h>
-#include "opt/lexer/table.h"
-#include "opt/token.h"
+#include <opt/lexer/table.h>
+#include <opt/token.h>
+#include <opt/utils/winxlin.h>
 
 /**
  * @brief Defines the state is terminating or not
@@ -37,12 +38,9 @@ lexer_characters_t get_character_type(int32_t c);
  * @param token_value - token value
  * @param state - token state
  * @param line - token line
+ * @param column - token column
  * @return token
  */
-token_t create_token(const char *token_value, state_t state, uint32_t line);
+token_t create_token(const char *token_value, state_t state, uint32_t line, const uint8_t column);
 
-#ifdef _WIN32
-#define strncpy(dest, src, size) strncpy_s(dest, size, src)
-#endif //_WIN32
-
-#endif //OPT_UTILS_H
+#endif //OPT_LEXER_UTILS_H

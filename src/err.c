@@ -27,6 +27,12 @@ const char *get_error_message(const error_t error_code) {
       return "ERROR_TOKEN_TOO_LONG";
     case ERROR_TOO_MUCH_TOKENS:
       return "ERROR_TOO_MUCH_TOKENS";
+    case ERROR_PARSE_UNDECLARED_VARIABLE:
+      return "ERROR_PARSE_UNDECLARED_VARIABLE";
+    case ERROR_TRANSLATOR_BAD_PLATFORM:
+      return "ERROR_TRANSLATOR_BAD_PLATFORM";
+    case ERROR_TRANSLATOR_UNEXPECTED_NODE:
+      return "ERROR_TRANSLATOR_UNEXPECTED_NODE";
     default:
       return "UNKNOWN_ERROR";
   }

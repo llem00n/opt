@@ -24,7 +24,7 @@ typedef enum expr_binary_type {
   EXPR_BINARY_TYPE_GT,
   EXPR_BINARY_TYPE_AND,
   EXPR_BINARY_TYPE_OR,
-  EXPR_BINARY_ASSIGN,
+  EXPR_BINARY_TYPE_ASSIGN,
 } expr_binary_type_t;
 
 /**

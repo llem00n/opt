@@ -61,6 +61,7 @@ typedef struct {
   char *value;
   token_type_t type;
   uint32_t line;
+  uint8_t column;
 } token_t;
 
 #endif //SRC_TOKEN_H

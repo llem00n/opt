@@ -34,8 +34,6 @@ add_executable(opt src/main.c
         include/opt/parser/parser.h
         include/opt/parser/__parser_private.h
         include/opt/token.h
-
-        src/ast.c
         src/exprstmt.c
         src/files.c
         src/lexer/lexer.c
@@ -47,6 +45,13 @@ add_executable(opt src/main.c
         src/output/utils/token_type_str.c
         src/parser.c
         src/err.c
+        include/opt/translator/translator.h
+        src/translator/translator.c
+        include/opt/translator/platforms/win32.h
+        include/opt/translator/platforms/win64.h
+        src/translator/platforms/win32.c
+        include/opt/translator/platforms/gen.h
+        include/opt/translator/__translator_private.h
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)

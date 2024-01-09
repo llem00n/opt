@@ -4,19 +4,22 @@
 // Created by Porubaimikh Oleksandr on 11/28/23
 // *************************************************************************
 
+#include <stdio.h>
 #include <opt/parser/parser.h>
 #include <opt/parser/__parser_private.h>
 #include <opt/token.h>
 #include <stdlib.h>
+#include <string.h>
 
-error_t parser_ctx_init(parser_ctx_t *ctx, token_t *start_token, int8_t *ast, size_t max_ast_size) {
+error_t parser_ctx_init(parser_ctx_t *ctx, token_t *start_token, int8_t *ast, const size_t max_ast_size, files_context_t *fctx) {
   if (ctx == NULL || start_token == NULL || ast == NULL) {
     return ERROR_BAD_PARAMETER;
   }
   ctx->ast_start = ctx->ast_cursor = ast;
   ctx->max_ast_size = max_ast_size;
   ctx->token_cursor = start_token;
-  ctx->error = ERROR_OK;
+  ctx->error_count = 0;
+  ctx->fctx = fctx;
   return ERROR_OK;
 }
 
@@ -30,7 +33,6 @@ root_t *get_parser_ctx_root(const parser_ctx_t* ctx) {
 
 void *__parser_alloc(parser_ctx_t *ctx, const size_t size) {
   if (ctx->ast_cursor + size > ctx->ast_start + ctx->max_ast_size) {
-    ctx->error = ERROR_AST_TOO_BIG;
     return NULL;
   }
 
@@ -68,6 +70,7 @@ error_t __parse_expr_assignment(parser_ctx_t *ctx, expr_t **expr) {
       if (tmp == NULL) {
         return ERROR_AST_TOO_BIG;
       }
+      if (!*expr) *expr = tmp;
 
       if (last) {
         ((expr_binary_t *) last)->right = tmp;
@@ -85,7 +88,7 @@ error_t __parse_expr_assignment(parser_ctx_t *ctx, expr_t **expr) {
   }
 
   if (error != ERROR_PARSE_UNEXPECTED_TOKEN) {
-    return error;
+    return ERROR_PARSE_UNKNOWN_ERROR;
   }
 
   error = __parse_expr_logical(ctx, (expr_binary_t**) &right);
@@ -95,7 +98,6 @@ error_t __parse_expr_assignment(parser_ctx_t *ctx, expr_t **expr) {
 
   if (tmp) {
     ((expr_binary_t *) tmp)->right = right;
-    *expr = (expr_t *) tmp;
   } else {
     *expr = right;
   }
@@ -336,7 +338,7 @@ error_t __parse_expr_unary(parser_ctx_t *ctx, expr_unary_t **unary) {
   if (ctx->token_cursor->type == TOKEN_MINUS || ctx->token_cursor->type == TOKEN_NOT) {
     const expr_unary_type_t type = ctx->token_cursor->type == TOKEN_MINUS ? EXPR_UNARY_TYPE_MINUS : EXPR_UNARY_TYPE_NOT;
     ctx->token_cursor++;
-    error = __parse_expr_unary(ctx, unary);
+    error = __parse_expr_unary(ctx, (expr_unary_t **)&tmp);
     if (error != ERROR_OK) {
       return error;
     }
@@ -442,6 +444,10 @@ error_t __parse_expr_lvalue(parser_ctx_t *ctx, expr_t **expr) {
     error = expr_variable_init((expr_variable_t *) *expr, ctx->token_cursor->value, start_token);
     if (error != ERROR_OK) {
       return error;
+    }
+
+    if (!__parser_variable_exists(ctx, ctx->token_cursor->value)) {
+      return ERROR_PARSE_UNDECLARED_VARIABLE;
     }
 
     ctx->token_cursor++;
@@ -586,6 +592,8 @@ error_t __parse_stmt(parser_ctx_t *ctx, stmt_t **stmt) {
     error = __parse_stmt_goto(ctx, (stmt_goto_t **) stmt);
   } else if (ctx->token_cursor->type == TOKEN_BAD_IDENTIFIER) {
     error = __parse_stmt_label(ctx, (stmt_label_t **) stmt);
+  } else if (ctx->token_cursor->type == TOKEN_START) {
+    error = __parse_stmt_block(ctx, (stmt_block_t **) stmt);
   } else {
     error = __parse_stmt_expr(ctx, (stmt_expr_t **) stmt);
   }
@@ -621,7 +629,19 @@ error_t __parse_stmt_block(parser_ctx_t *ctx, stmt_block_t **block) {
     prev = stmt;
     error = __parse_stmt(ctx, &stmt);
     if (error != ERROR_OK) {
-      return error;
+      ctx->error_count++;
+
+      fprintf(ctx->fctx->errors, "Error [%s] at %d:%d\n", get_error_message(error), ctx->token_cursor->line, ctx->token_cursor->column);
+      while (ctx->token_cursor->type != TOKEN_SEMICOLON
+          && ctx->token_cursor->type != TOKEN_EOF
+          && ctx->token_cursor->type != TOKEN_FINISH
+          && ctx->token_cursor->type != TOKEN_START
+          && ctx->token_cursor->type != TOKEN_IF
+          && ctx->token_cursor->type != TOKEN_FOR
+          && ctx->token_cursor->type != TOKEN_GOTO
+          && ctx->token_cursor->type != TOKEN_BAD_IDENTIFIER) {
+        ctx->token_cursor++;
+      }
     }
 
     if (prev) {
@@ -789,4 +809,16 @@ error_t __parse_stmt_expr(parser_ctx_t *ctx, stmt_expr_t **stmt_expr) {
   stmt_expr_init(*stmt_expr, expr, start_token);
 
   return ERROR_OK;
+}
+
+bool __parser_variable_exists(parser_ctx_t *ctx, const char *name) {
+  for (size_t i = 0; i < MAX_VARIABLES_COUNT; i++) {
+    if (ctx->root->var.def[i].name == NULL) {
+      break;
+    }
+    if (strcmp(ctx->root->var.def[i].name, name) == 0) {
+      return true;
+    }
+  }
+  return false;
 }

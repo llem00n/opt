@@ -16,6 +16,6 @@
 /**
  * @brief Reads the file and returns an array of tokens
 */
-error_t get_tokens(FILE* file, token_t tokens[], uint32_t tokens_length);
+error_t get_tokens(FILE* file, token_t tokens[], uint32_t tokens_max_length);
 
 #endif //SRC_LEXER_H

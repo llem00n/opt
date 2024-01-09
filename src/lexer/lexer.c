@@ -15,10 +15,11 @@
 
 bool should_add(lexer_characters_t char_type, state_t state);
 
-error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
+error_t get_tokens(FILE *file, token_t tokens[], const uint32_t tokens_max_length) {
   state_t state = 0;
   uint32_t tokens_length = 0;
   int32_t c = 0;
+  uint8_t current_column = 0, token_start_column = 1;
   char token_value[TOKEN_VALUE_MAX_LENGTH + 1] = "";
   uint16_t token_value_length = 0;
   error_t result = ERROR_OK;
@@ -27,7 +28,13 @@ error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
 
   while (c != EOF) {
     if (read_next) c = getc(file);
-    if (c == '\n' && read_next) line++;
+    if (c == '\n' && read_next) {
+      line++;
+      current_column = 0;
+    } else if (read_next) {
+      current_column++;
+    }
+
     read_next = true;
 
     const lexer_characters_t character_type = get_character_type(c);
@@ -39,17 +46,19 @@ error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
       result = ERROR_TOO_MUCH_TOKENS;
       read_next = false;
       state = 0;
+      token_start_column = current_column;
     } else if (is_terminating) {
       read_next = false;
       const token_type_t token_type = get_token_type(state);
       if (token_type != TOKEN_COMMENT && token_type != TOKEN_WHITESPACE) {
-        tokens[tokens_length++] = create_token(token_value, state, line);
+        tokens[tokens_length++] = create_token(token_value, state, line, token_start_column);
       }
       token_value_length = 0;
       state = 0;
+      token_start_column = current_column;
     } else if (adding && token_value_length == TOKEN_VALUE_MAX_LENGTH) {
       result = ERROR_TOKEN_TOO_LONG;
-      tokens[tokens_length++] = create_token(token_value, state, line);
+      tokens[tokens_length++] = create_token(token_value, state, line, token_start_column);
       token_value_length = 0;
     } else if (adding) {
       token_value[token_value_length++] = (char)c;
@@ -66,11 +75,12 @@ error_t get_tokens(FILE *file, token_t tokens[], uint32_t tokens_max_length) {
   return result;
 }
 
-token_t create_token(const char *token_value, const state_t state, const uint32_t line) {
+token_t create_token(const char *token_value, const state_t state, const uint32_t line, const uint8_t column) {
   token_t token = {
     .line = line,
     .type = get_token_type(state),
     .value = NULL,
+    .column = column,
   };
 
   if (token.type < SELF_CONTAINING_TOKENS_START) {

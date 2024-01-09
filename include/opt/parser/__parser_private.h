@@ -10,6 +10,7 @@
 #include <opt/parser/parser.h>
 #include <opt/ast/ast.h>
 #include <opt/err.h>
+#include <stdbool.h>
 
 /**
  * @brief Allocate memory for node of size `size` in AST bytes array
@@ -229,5 +230,13 @@ error_t __parse_stmt_label(parser_ctx_t *ctx, stmt_label_t **stmt_label);
  *        ERROR_PARSE_UNEXPECTED_TOKEN if unexpected token
 */
 error_t __parse_stmt_expr(parser_ctx_t *ctx, stmt_expr_t **stmt_expr);
+
+/**
+ * @brief Check if variable with name `name` exists in current scope
+ * @param ctx Parser context
+ * @param name Variable name
+ * @return true if exists, false otherwise
+*/
+bool __parser_variable_exists(parser_ctx_t *ctx, const char *name);
 
 #endif //OPT_PARSER___PARSER_PRIVATE_H

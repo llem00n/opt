@@ -10,6 +10,7 @@
 #include <opt/token.h>
 #include <opt/err.h>
 #include <opt/ast/utils.h>
+#include <opt/files.h>
 #include <stddef.h>
 
 typedef struct parser_ctx {
@@ -18,7 +19,8 @@ typedef struct parser_ctx {
   int8_t *ast_cursor;
   size_t max_ast_size;
   root_t *root;
-  error_t error;
+  uint8_t error_count;
+  files_context_t *fctx;
 } parser_ctx_t;
 
 /**
@@ -27,10 +29,11 @@ typedef struct parser_ctx {
  * @param start_token Start token
  * @param ast AST bytes
  * @param max_ast_size Max AST size
+ * @param fctx Files context
  * @return ERROR_OK if success,
  *         ERROR_BAD_PARAMETER if ctx, start_token or ast is NULL,
 */
-error_t parser_ctx_init(parser_ctx_t *ctx, token_t *start_token, int8_t *ast, size_t max_ast_size);
+error_t parser_ctx_init(parser_ctx_t *ctx, token_t *start_token, int8_t *ast, size_t max_ast_size, files_context_t *fctx);
 
 /**
  * @brief Parse program
@@ -47,5 +50,12 @@ error_t parse(parser_ctx_t *ctx);
  * @return Root node
 */
 root_t *get_parser_ctx_root(const parser_ctx_t* ctx);
+
+/**
+ * @brief Get error count
+ * @param ctx Parser context
+ * @return Error count
+*/
+uint8_t get_parser_ctx_error_count(const parser_ctx_t* ctx);
 
 #endif //PARSER_PARSER_H
